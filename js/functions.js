@@ -3,12 +3,14 @@ gardenCanvas,
 $garden,
 garden,
 offsetX,
-offsetY;
+offsetY,
+scale=1;
 
 function heartInit() {
   // $("#soup").remove();
   // $("#mainDiv").show();
-  // adjustHeartPosition();
+  adjustWordsPosition();
+  adjustHeartPosition();
   otherInit();
   offsetX = $("#loveHeart").width() / 2;
   offsetY = $("#loveHeart").height() / 2 - 55;
@@ -49,11 +51,9 @@ function otherInit() {
   var a = $loveHeart.width() / 2;
   var b = $loveHeart.height() / 2 - 55;
   $garden = $("#garden");
-  // $garden.css('transform','scale(0.5)')
   gardenCanvas = $garden[0];
   gardenCanvas.width = $("#loveHeart").width();
   gardenCanvas.height = $("#loveHeart").height();
-
   gardenCtx = gardenCanvas.getContext("2d");
   gardenCtx.globalCompositeOperation = "lighter";
   garden = new Garden(gardenCtx, gardenCanvas);
@@ -151,7 +151,7 @@ function timeElapse(c) {
   $("#elapseClock").html(a);
 }
 function showMessages() {
-  adjustWordsPosition();
+  // adjustWordsPosition();
   $("#messages").fadeIn(5000, function () {
     showLoveU();
   });
@@ -163,8 +163,14 @@ function adjustWordsPosition() {
 }
 function adjustHeartPosition(){
   var $loveHeart=$("#loveHeart")
-  $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
-  $loveHeart.css("height",$loveHeart.width()*625/670+"px");
+  if (window.innerWidth>700){
+    return
+  }
+  scale = window.innerWidth/700;
+  var ox = (window.innerWidth-700*scale)/2;
+  $loveHeart.css("transform-origin",ox+"px").css("transform","scale("+scale+")");
+  // $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
+  // $loveHeart.css("height",$loveHeart.width()*625/670+"px");
 }
 
 function showLoveU() {
