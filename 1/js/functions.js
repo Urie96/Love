@@ -1,50 +1,11 @@
-var gardenCtx,
-gardenCanvas,
-$garden,
-garden,
-offsetX,
-offsetY;
-
-function heartInit() {
-  // $("#soup").remove();
-  // $("#mainDiv").show();
-  otherInit();
-  offsetX = $("#loveHeart").width() / 2;
-  offsetY = $("#loveHeart").height() / 2 - 55;
-  var together = new Date();
-  together.setFullYear(2019, 6, 13);
-  together.setHours(23);
-  together.setMinutes(45);
-  together.setSeconds(0);
-  together.setMilliseconds(0);
-
-  if (!document.createElement("canvas").getContext) {
-    var msg = document.createElement("div");
-    msg.id = "errorMsg";
-    msg.innerHTML =
-      "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
-    document.body.appendChild(msg);
-    $("#code").css("display", "none");
-    $("#copyright").css("position", "absolute");
-    $("#copyright").css("bottom", "10px");
-    document.execCommand("stop");
-  } else {
-    startHeartAnimation();
-
-    timeElapse(together);
-    setInterval(function () {
-      timeElapse(together);
-    }, 500);
-    // adjustCodePosition();
-    // $("#code").typewriter();
-  }
-}
-
-function otherInit() {
-  var $window = $(window);
-  var clientWidth = $(window).width();
-  var clientHeight = $(window).height();
-
+var $window = $(window),
+  gardenCtx,
+  gardenCanvas,
+  $garden,
+  garden;
+var clientWidth = $(window).width();
+var clientHeight = $(window).height();
+$(function () {
   $loveHeart = $("#loveHeart");
   var a = $loveHeart.width() / 2;
   var b = $loveHeart.height() / 2 - 55;
@@ -71,15 +32,14 @@ function otherInit() {
   setInterval(function () {
     garden.render();
   }, Garden.options.growSpeed);
-  $(window).resize(function () {
-    var b = $(window).width();
-    var a = $(window).height();
-    if (b != clientWidth && a != clientHeight) {
-      location.replace(location);
-    }
-  });
-}
-
+});
+$(window).resize(function () {
+  var b = $(window).width();
+  var a = $(window).height();
+  if (b != clientWidth && a != clientHeight) {
+    location.replace(location);
+  }
+});
 function getHeartPoint(c) {
   var b = c / Math.PI;
   var a = 19.5 * (16 * Math.pow(Math.sin(b), 3));
@@ -118,6 +78,29 @@ function startHeartAnimation() {
     }
   }, c);
 }
+(function (a) {
+  a.fn.typewriter = function () {
+    this.each(function () {
+      var d = a(this),
+        c = d.html(),
+        b = 0;
+      d.html("");
+      var e = setInterval(function () {
+        var f = c.substr(b, 1);
+        if (f == "<") {
+          b = c.indexOf(">", b) + 1;
+        } else {
+          b++;
+        }
+        d.html(c.substring(0, b) + (b & 1 ? "_" : ""));
+        if (b >= c.length) {
+          clearInterval(e);
+        }
+      }, 75);
+    });
+    return this;
+  };
+})(jQuery);
 function timeElapse(c) {
   var e = Date();
   var f = (Date.parse(e) - Date.parse(c)) / 1000;
@@ -166,5 +149,5 @@ function adjustCodePosition() {
   );
 }
 function showLoveU() {
-  $("#loveu").fadeIn(2000);
+  $("#loveu").fadeIn(3000);
 }

@@ -48,8 +48,7 @@
             width: 128px;
             background-size: cover;
             border-radius: 200px;
-            box-shadow: 0px 0px 40px rgba(63, 81, 181, 0.72);
-            border: 3px solid #00a0ff;
+            box-shadow: 0px 0px 40px #fbcdcd;
             opacity: 1;
             margin: 0 auto;
             margin-top: 20px;
@@ -106,7 +105,7 @@
         init: function () {
             S.Drawing.init('.canvas');
             document.body.classList.add('body--ready');
-            S.UI.simulate("悦悦|I'm|ZLOE|Nice|to|Meet|You|#countdown 3");
+            S.UI.simulate("悦悦|11|#stop");
             S.Drawing.loop(function () {
                 S.Shape.render();
             });
@@ -172,13 +171,6 @@
             sequence = [],
             cmd = '#';
 
-        function formatTime(date) {
-            var h = date.getHours(),
-                m = date.getMinutes(),
-                m = m < 10 ? '0' + m : m;
-            return h + ':' + m;
-        }
-
         function getValue(value) {
             return value && value.split(' ')[1];
         }
@@ -197,7 +189,6 @@
                 interval = setInterval(function () {
                     currentAction = reverse ? currentAction - 1 : currentAction + 1;
                     fn(currentAction);
-
                     if ((!reverse && max && currentAction === max) || (reverse && currentAction === 0)) {
                         clearInterval(interval);
                     }
@@ -219,21 +210,12 @@
 
                 switch (action) {
 
-                    case 'rectangle':
-                        value = value && value.split('x');
-                        value = (value && value.length === 2) ? value : [maxShapeSize, maxShapeSize / 2];
-
-                        S.Shape.switchShape(S.ShapeBuilder.rectangle(Math.min(maxShapeSize, parseInt(value[0])), Math.min(maxShapeSize, parseInt(value[1]))));
-                        break;
-
-                    case 'circle':
-                        value = parseInt(value) || maxShapeSize;
-                        value = Math.min(value, maxShapeSize);
-                        S.Shape.switchShape(S.ShapeBuilder.circle(value));
+                    case 'stop':
+                        alert(1);
                         break;
 
                     default:
-                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'HacPai' : current));
+                        S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Urie' : current));
                 }
             }, 2000, sequence.length);
         }
