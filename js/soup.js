@@ -2,7 +2,7 @@ var S = {
     init: function () {
         S.Drawing.init('.canvas');
         document.body.classList.add('body--ready');
-        S.UI.simulate("悦悦|余生有你|未来可期|#stop");
+        S.UI.simulate("悦悦|余生+有你|未来+可期|#stop");
         S.Drawing.loop(function () {
             S.Shape.render();
         });
@@ -117,7 +117,7 @@ S.UI = (function () {
                 default:
                     S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Urie' : current));
             }
-        }, 2000, sequence.length);
+        }, 2500, sequence.length);
     }
 
     return {
@@ -352,15 +352,26 @@ S.ShapeBuilder = (function () {
         },
         letter: function (l) {
             var s = 0;
-
-            setFontSize(fontSize);
-            s = Math.min(fontSize,
-                (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
-                (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
-            setFontSize(s);
-
+            if (l.indexOf("+")!=-1) {
+                var twoWords=l.split("+",2)
+                setFontSize(fontSize);
+                s = Math.min(fontSize,
+                    (shapeCanvas.width / shapeContext.measureText(twoWords[0]).width) * 0.8 * fontSize,
+                    (shapeCanvas.width / shapeContext.measureText(twoWords[1]).width) * 0.8 * fontSize,
+                    (shapeCanvas.height / (fontSize)) * (isNumber(l) ? 1 : 0.45) * fontSize);
+                setFontSize(s);
+            shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
+            shapeContext.fillText(twoWords[0], shapeCanvas.width / 2, shapeCanvas.height / 2-s/2);
+                shapeContext.fillText(twoWords[1], shapeCanvas.width / 2, shapeCanvas.height / 2+s/2);
+            }else{
+                setFontSize(fontSize);
+                s = Math.min(fontSize,
+                    (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
+                    (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
+                setFontSize(s);
             shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
             shapeContext.fillText(l, shapeCanvas.width / 2, shapeCanvas.height / 2);
+            }
 
             return processCanvas();
         },

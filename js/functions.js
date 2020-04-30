@@ -8,6 +8,7 @@ offsetY;
 function heartInit() {
   // $("#soup").remove();
   // $("#mainDiv").show();
+  // adjustHeartPosition();
   otherInit();
   offsetX = $("#loveHeart").width() / 2;
   offsetY = $("#loveHeart").height() / 2 - 55;
@@ -24,7 +25,6 @@ function heartInit() {
     msg.innerHTML =
       "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
     document.body.appendChild(msg);
-    $("#code").css("display", "none");
     $("#copyright").css("position", "absolute");
     $("#copyright").css("bottom", "10px");
     document.execCommand("stop");
@@ -49,16 +49,18 @@ function otherInit() {
   var a = $loveHeart.width() / 2;
   var b = $loveHeart.height() / 2 - 55;
   $garden = $("#garden");
+  // $garden.css('transform','scale(0.5)')
   gardenCanvas = $garden[0];
   gardenCanvas.width = $("#loveHeart").width();
   gardenCanvas.height = $("#loveHeart").height();
+
   gardenCtx = gardenCanvas.getContext("2d");
   gardenCtx.globalCompositeOperation = "lighter";
   garden = new Garden(gardenCtx, gardenCanvas);
-  $("#content").css("width", $loveHeart.width() + $("#code").width());
+  $("#content").css("width", $loveHeart.width());
   $("#content").css(
     "height",
-    Math.max($loveHeart.height(), $("#code").height())
+    $loveHeart.height()
   );
   $("#content").css(
     "margin-top",
@@ -159,12 +161,12 @@ function adjustWordsPosition() {
   $("#words").css("top", $("#garden").position().top + 195);
   $("#words").css("left", $("#garden").position().left + 70);
 }
-function adjustCodePosition() {
-  $("#code").css(
-    "margin-top",
-    ($("#garden").height() - $("#code").height()) / 2
-  );
+function adjustHeartPosition(){
+  var $loveHeart=$("#loveHeart")
+  $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
+  $loveHeart.css("height",$loveHeart.width()*625/670+"px");
 }
+
 function showLoveU() {
   $("#loveu").fadeIn(2000);
 }
