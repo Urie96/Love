@@ -2,8 +2,8 @@ var S = {
     init: function () {
         S.Drawing.init('.canvas');
         document.body.classList.add('body--ready');
-        // S.UI.simulate("悦悦|余生+有你|未来+可期|#stop");
-        S.UI.simulate("#stop");
+        S.UI.simulate("悦悦|余生+有你|未来+可期|#stop");
+        // S.UI.simulate("#stop");
         S.Drawing.loop(function () {
             S.Shape.render();
         });
