@@ -9,7 +9,9 @@ scale=1;
 function heartInit() {
   // $("#soup").remove();
   // $("#mainDiv").show();
-  adjustWordsPosition();
+  if (!isPC()){
+    adjustWordsPosition();
+  }
   adjustHeartPosition();
   otherInit();
   offsetX = $("#loveHeart").width() / 2;
@@ -151,7 +153,9 @@ function timeElapse(c) {
   $("#elapseClock").html(a);
 }
 function showMessages() {
-  // adjustWordsPosition();
+  if (isPC()){
+    adjustWordsPosition();
+  }
   $("#messages").fadeIn(5000, function () {
     showLoveU();
   });
@@ -168,7 +172,9 @@ function adjustHeartPosition(){
   }
   scale = window.innerWidth/700;
   var ox = (window.innerWidth-700*scale)/2;
-  $loveHeart.css("transform-origin",ox+"px").css("transform","scale("+scale+")");
+  if (!isPC()){
+    $loveHeart.css("transform-origin",ox+"px").css("transform","scale("+scale+")");
+  }
   // $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
   // $loveHeart.css("height",$loveHeart.width()*625/670+"px");
 }

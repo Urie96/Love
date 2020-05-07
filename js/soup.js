@@ -10,6 +10,20 @@ var S = {
     }
 };
 
+function isPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+};
 
 S.Drawing = (function () {
     var canvas,
@@ -118,7 +132,7 @@ S.UI = (function () {
                 default:
                     S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Urie' : current));
             }
-        }, 2500, sequence.length);
+        }, 3000, sequence.length);
     }
 
     return {
@@ -258,7 +272,7 @@ S.Dot.prototype = {
 
 
 S.ShapeBuilder = (function () {
-    var gap = 13,
+    var gap = isPC()?13:9,
         shapeCanvas = document.createElement('canvas'),
         shapeContext = shapeCanvas.getContext('2d'),
         fontSize = 500,
@@ -353,7 +367,7 @@ S.ShapeBuilder = (function () {
         },
         letter: function (l) {
             var s = 0;
-            if (l.indexOf("+")!=-1) {
+            if (!isPC()&&l.indexOf("+")!=-1) {
                 var twoWords=l.split("+",2)
                 setFontSize(fontSize);
                 s = Math.min(fontSize,
@@ -365,6 +379,7 @@ S.ShapeBuilder = (function () {
             shapeContext.fillText(twoWords[0], shapeCanvas.width / 2, shapeCanvas.height / 2-s/2);
                 shapeContext.fillText(twoWords[1], shapeCanvas.width / 2, shapeCanvas.height / 2+s/2);
             }else{
+                l=l.replace("+","");
                 setFontSize(fontSize);
                 s = Math.min(fontSize,
                     (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,

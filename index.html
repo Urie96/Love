@@ -55,10 +55,13 @@
 	</div>
 
 	<script>
+		document.body.style.overflow='hidden';
 		S.init();
 
 		function soupStop(){
-			// $(".cs").fadeOut(2000);
+			if (isPC()){
+				 $(".cs").fadeOut(2000);
+			}
 			heartInit();
 		}
 		// heartInit();
