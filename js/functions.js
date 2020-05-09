@@ -6,6 +6,25 @@ offsetX,
 offsetY,
 scale=1;
 
+// function isPC() {
+//   var userAgentInfo = navigator.userAgent;
+//   var Agents = ["Android", "iPhone",
+//               "SymbianOS", "Windows Phone",
+//               "iPad", "iPod"];
+//   var flag = true;
+//   for (var v = 0; v < Agents.length; v++) {
+//       if (userAgentInfo.indexOf(Agents[v]) > 0) {
+//           flag = false;
+//           break;
+//       }
+//   }
+//   return flag;
+// };
+
+function isPC(){
+  return window.innerWidth>window.innerHeight
+}
+
 function heartInit() {
   // $("#soup").remove();
   // $("#mainDiv").show();
@@ -167,14 +186,13 @@ function adjustWordsPosition() {
 }
 function adjustHeartPosition(){
   var $loveHeart=$("#loveHeart")
-  if (window.innerWidth>700){
+  if (window.innerWidth>700&&window.innerHeight>650){
     return
   }
-  scale = window.innerWidth/700;
+  scale = Math.min(window.innerWidth/700,window.innerHeight/650);
   var ox = (window.innerWidth-700*scale)/2;
-  if (!isPC()){
-    $loveHeart.css("transform-origin",ox+"px").css("transform","scale("+scale+")");
-  }
+  var oy = (window.innerHeight-650*scale)/2;
+  $loveHeart.css("transform-origin",ox+"px "+oy+"px").css("transform","scale("+scale+")");
   // $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
   // $loveHeart.css("height",$loveHeart.width()*625/670+"px");
 }
