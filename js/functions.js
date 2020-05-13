@@ -192,7 +192,8 @@ function adjustHeartPosition(){
   scale = Math.min(window.innerWidth/700,window.innerHeight/650);
   var ox = (window.innerWidth-700*scale)/2;
   var oy = (window.innerHeight-650*scale)/2;
-  $loveHeart.css("transform-origin",ox+"px "+oy+"px").css("transform","scale("+scale+")");
+  // $loveHeart.css("transform-origin","center center").css("transform","scale("+scale+")"); 
+  $loveHeart.css("transform-origin",ox+"px center").css("transform","scale("+scale+")");
   // $loveHeart.css("width",Math.min(window.innerWidth - 10,$loveHeart.width())+"px");
   // $loveHeart.css("height",$loveHeart.width()*625/670+"px");
 }
