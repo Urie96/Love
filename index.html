@@ -17,7 +17,9 @@
 	<script type="text/javascript" src="js/garden.js"></script>
 	<script type="text/javascript" src="js/functions.js"></script>
 	<link href="css/default2.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="js/msg.js"></script>
 	<script type="text/javascript" src="js/soup.js"></script>
+</head>
 </head>
 
 <body>
@@ -58,12 +60,11 @@
 		document.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
 		document.body.style.overflow = 'hidden';
 		S.init();
-
 		function soupStop() {
-			if (isPC()) {
-				$(".cs").fadeOut(2000);
-			}
 			heartInit();
+			if ($("#loveHeart").offset().top < $("#logo").offset().top + $("#logo").height()) {
+				$("#logo").fadeOut(2000);
+			}
 		}
 		// heartInit();
 
