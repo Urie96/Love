@@ -3,8 +3,8 @@ var S = {
     todayMessage();
     S.Drawing.init(".canvas");
     document.body.classList.add("body--ready");
-    // S.UI.simulate(todayMessage() + "|#stop");
-    S.UI.simulate("#stop");
+    S.UI.simulate(todayMessage() + "|#stop");
+    // S.UI.simulate("#stop");
     S.Drawing.loop(function () {
       S.Shape.render();
     });
