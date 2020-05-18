@@ -68,7 +68,12 @@ function anniversary(today) {
 }
 
 function randomMessage() {
-  var msgs = ["悦悦|余生+有你|未来+可期", "悦悦|一生+一世|一爱+一人"];
+  var msgs = [
+    "悦悦|余生+有你|未来+可期",
+    "悦悦|一生+一世|一爱+一人",
+    "悦悦|久伴+不离|此生+不弃",
+    "春水初生|春林初盛|春风十里|都不如你",
+  ];
   return msgs[Math.floor(Math.random() * msgs.length)];
 }
 
