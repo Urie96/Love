@@ -49,7 +49,7 @@ function commemoration() {
 
 function anniversary(today) {
   var today = new Date().toLocaleDateString();
-  today = today.substring(4);
+  today = today.substring(5);
   switch (today) {
     case "7/13":
       var num = new Date().getFullYear() - "2019";
