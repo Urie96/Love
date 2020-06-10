@@ -1,20 +1,19 @@
-name: Greet Everyone
-# This workflow is triggered on pushes to the repository.
 on: [push]
 
 jobs:
-  build:
-    # 作业名称为 Greeting
-    name: Greeting
-    # 此作业在 Linux 上运行
+  hello_world_job:
     runs-on: ubuntu-latest
+    name: A job to say hello
     steps:
-      # 此步骤使用 GitHub 的 hello-world-javascript-action：https://github.com/actions/hello-world-javascript-action
-      - name: Hello world
-        uses: actions/hello-world-javascript-action@v1
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
         with:
           who-to-greet: "Mona the Octocat"
-        id: hello
-      # 此步骤打印上一步操作的输出（时间）。
-      - name: Echo the greeting's time
-        run: echo 'The time was ${{ steps.hello.outputs.time }}.'
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
