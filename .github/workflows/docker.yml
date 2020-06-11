@@ -6,12 +6,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
-        with:
-          registry: 59.110.71.167:5000
-          repository: love
-          tags: latest
+        name: Checkout
+      - name: Docker build
+        run: |
+          docker build -t love:latest .
