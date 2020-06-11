@@ -13,5 +13,5 @@ jobs:
       - uses: docker/build-push-action@v1
         with:
           registry: 59.110.71.167:5000
-          repository: 59.110.71.167:5000/love
+          repository: love
           tags: latest
