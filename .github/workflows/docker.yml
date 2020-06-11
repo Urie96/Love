@@ -10,5 +10,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - uses: docker/build-push-action@v1
+          with:
+            registry: 59.110.71.167:5000
+            repository: 59.110.71.167:5000/love
+            tags: latest
