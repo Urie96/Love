@@ -13,8 +13,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: root
-          passphrase: ${{ secrets.PASSPHRASE }}
-          privateKey: ${{ secrets.PRIVATE_KEY}}
+          password: ${{ secrets.PASSWORD}}
           command: |
             cd /root/Love
             git pull
