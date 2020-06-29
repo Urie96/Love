@@ -14,64 +14,41 @@
 	</style>
 	<link href="css/default.css" type="text/css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/garden.js"></script>
-	<script type="text/javascript" src="js/functions.js"></script>
-	<link href="css/default2.css" type="text/css" rel="stylesheet">
+	<!-- <script type="text/javascript" src="js/garden.js"></script> -->
 	<script type="text/javascript" src="js/msg.js"></script>
-	<script type="text/javascript" src="js/soup.js"></script>
+	<script type="text/javascript" src="js/bubbles.js"></script>
 </head>
 </head>
 
 <body>
+	<canvas type="2d" id="bubbles" style="width: 100%; height: 100%;">
+	</canvas>
 
-	<div id="soup">
-		<div class="cs">
-			<img src="yue.jpg" id="logo">
-		</div>
-		<canvas class="canvas" width="1820" height="905"></canvas>
-	</div>
-
-
-	<div id="mainDiv">
-		<div id="content">
-			<div id="loveHeart">
-				<canvas id="garden"></canvas>
-				<div id="words">
-					<div id="messages">
-						Yue Yue, We have been together for
-						<div id="elapseClock"></div>
-					</div>
-					<div id="loveu">
-						My heart belongs to you.<br />
-						<div class="signature">- Rui Rui</div>
-					</div>
-				</div>
+	<canvas type="2d" id="garden" style="width: 100%; height: 100%">
+	</canvas>
+	<!-- <div id="words" style="width: 500px;transform:scale({{window.width/700}})">
+		<div id="messages" style="opacity: {{opacity.message}}">
+			Yue Yue, We have been together for
+			<div id="elapseClock">
+				<span class="digit">{{clock.days}}</span> days
+				<span class="digit">{{clock.hours}}</span> hours
+				<span class="digit">{{clock.minutes}}</span> minutes
+				<span class="digit">{{clock.seconds}}</span> seconds
 			</div>
 		</div>
-		<div id="copyright">
-			<!-- <div id="copyright">
-			Inspired by <a href="http://www.openrise.com/lab/FlowerPower/">FlowerPower</a> project.<br />
-			Copyright © 2011 <a href=''>hacker</a> 2009-2011
-		</div> -->
+		<div id="loveu" style="opacity: {{opacity.loveu}}">
+			My heart belongs to you.
+			<div class="signature">- RuiRui</div>
 		</div>
-	</div>
-
-	<script>
-		document.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
-		document.body.style.overflow = 'hidden';
-		S.init();
-		function soupStop() {
-			heartInit();
-			if ($("#loveHeart").offset().top < $("#logo").offset().top + $("#logo").height()) {
-				$("#logo").fadeOut(2000);
-			}
-		}
-		// heartInit();
-
-	</script>
+	</div> -->
 	<audio autoplay="autoplay" loop="loop">
 		<source src="http://oss.sweetlove.top/chun.mp3" type="audio/mpeg">
 	</audio>
 </body>
+<script>
+	let bubbleCanvas = document.getElementById("bubbles")
+	let gardenCanvas = document.getElementById("garden")
+	renderBubbles(bubbleCanvas, 1)
+</script>
 
 </html>
