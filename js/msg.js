@@ -2,7 +2,7 @@ var loveMsg = "悦悦|今天是|相恋|";
 var kownMsg = "悦悦|今天是|相识|";
 var meetMsg = "悦悦|今天是|见到你|";
 
-function todayMessage() {
+export default (() => {
   var today = new Date().toLocaleDateString();
   return (
     birthday(today) ||
@@ -10,7 +10,7 @@ function todayMessage() {
     commemoration(today) ||
     randomMessage()
   );
-}
+})();
 
 function getDay(before) {
   var now = new Date();

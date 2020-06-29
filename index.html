@@ -5,7 +5,6 @@
 	<title>Love Yue</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<style type="text/css">
 		@font-face {
 			font-family: digit;
@@ -13,42 +12,32 @@
 		}
 	</style>
 	<link href="css/default.css" type="text/css" rel="stylesheet">
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<!-- <script type="text/javascript" src="js/garden.js"></script> -->
-	<script type="text/javascript" src="js/msg.js"></script>
-	<script type="text/javascript" src="js/bubbles.js"></script>
+	<script type="module" src="js/entry.js"></script>
 </head>
 </head>
 
 <body>
-	<canvas type="2d" id="bubbles" style="width: 100%; height: 100%;">
+	<canvas id="bubbles" style="width: 100%; height: 100%;">
 	</canvas>
 
-	<canvas type="2d" id="garden" style="width: 100%; height: 100%">
+	<canvas id="garden" style="width: 100%; height: 100%">
 	</canvas>
-	<!-- <div id="words" style="width: 500px;transform:scale({{window.width/700}})">
-		<div id="messages" style="opacity: {{opacity.message}}">
+	<div id="words">
+		<div id="messages" style="opacity: 0">
 			Yue Yue, We have been together for
-			<div id="elapseClock">
-				<span class="digit">{{clock.days}}</span> days
-				<span class="digit">{{clock.hours}}</span> hours
-				<span class="digit">{{clock.minutes}}</span> minutes
-				<span class="digit">{{clock.seconds}}</span> seconds
-			</div>
+			<div id="elapseClock"></div>
 		</div>
-		<div id="loveu" style="opacity: {{opacity.loveu}}">
+		<div id="loveu" style="opacity: 0">
 			My heart belongs to you.
 			<div class="signature">- RuiRui</div>
 		</div>
-	</div> -->
+	</div>
 	<audio autoplay="autoplay" loop="loop">
 		<source src="http://oss.sweetlove.top/chun.mp3" type="audio/mpeg">
 	</audio>
 </body>
 <script>
-	let bubbleCanvas = document.getElementById("bubbles")
-	let gardenCanvas = document.getElementById("garden")
-	renderBubbles(bubbleCanvas, 1)
+
 </script>
 
 </html>

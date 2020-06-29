@@ -1,16 +1,16 @@
+import msg from "./msg.js";
+import { requestAnimationFrame } from "./common.js";
+
 let canvas = {},
   ctx = {},
   gap = 22, // gap越小，泡泡越小，字体越精细
   speedCompensate = 1, // 为了适应帧数变化
   callbackWhenStop;
-function renderBubbles(canvasNode, dpr, callback) {
+export default function (canvasNode, callback) {
   callbackWhenStop = callback;
   canvas = canvasNode;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  gap = Math.floor((gap * dpr) / 3);
+  gap = Math.floor((gap * window.devicePixelRatio) / 3);
   ctx = canvas.getContext("2d");
-  let msg = todayMessage();
   action.set(msg + "|#stop");
   drawing.renderLoop(shape.render);
 }
@@ -140,15 +140,6 @@ let drawing = {
     };
   },
   renderLoop: (fn) => {
-    let requestFrame =
-      window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.oRequestAnimationFrame ||
-      window.msRequestAnimationFrame ||
-      function (callback) {
-        window.setTimeout(callback, 1000 / 60);
-      };
     let lastTime = 0;
     let loop = () => {
       let now = +new Date(),
@@ -158,8 +149,7 @@ let drawing = {
       // console.log(Math.floor(fps))
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       fn();
-      requestFrame(loop);
-      // canvas.requestAnimationFrame(loop);
+      requestAnimationFrame(loop);
     };
     loop();
   },

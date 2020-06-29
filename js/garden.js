@@ -1,26 +1,34 @@
+import { requestAnimationFrame } from "./common.js";
+
 let canvas = {},
   ctx = {},
-  garden = {},
-  page = {};
-function renderGarden(canvasNode, dpr, pageInstance) {
+  garden = {};
+export default (canvasNode) => {
   canvas = canvasNode;
   ctx = canvas.getContext("2d");
-  page = pageInstance;
   heartInit();
-}
+};
 function heartInit() {
   ctx.globalCompositeOperation = "lighter";
   garden = new Garden(ctx, canvas);
-  setInterval(() => {
+  let renderLoop = () => {
     garden.render();
-  }, Garden.options.growSpeed);
+    requestAnimationFrame(renderLoop);
+  };
+  renderLoop();
+  let cancelRender = () => {
+    renderLoop = () => {};
+  };
+  // setInterval(() => {
+  //   garden.render();
+  // }, Garden.options.growSpeed);
   var together = new Date();
   together.setFullYear(2019, 6, 13);
   together.setHours(23);
   together.setMinutes(45);
   together.setSeconds(0);
   together.setMilliseconds(0);
-  startHeartAnimation();
+  startHeartAnimation(cancelRender);
   timeElapse(together);
   setInterval(function () {
     timeElapse(together);
@@ -29,7 +37,7 @@ function heartInit() {
 
 function getHeartPoint(c) {
   var b = c / Math.PI;
-  var r = Math.min(canvas.height, canvas.width) / 35;
+  var r = Math.min(canvas.height - 100, canvas.width) / 35;
   var x = r * 16 * Math.pow(Math.sin(b), 3);
   var y =
     -r *
@@ -39,7 +47,7 @@ function getHeartPoint(c) {
       Math.cos(4 * b));
   return [canvas.width / 2 + x, canvas.height / 2 + y];
 }
-function startHeartAnimation() {
+function startHeartAnimation(callback) {
   var d = 10;
   var b = [];
   let interval = setInterval(function () {
@@ -58,6 +66,7 @@ function startHeartAnimation() {
       garden.createRandomBloom(x, y);
     }
     if (d >= 30) {
+      callback && callback();
       clearInterval(interval);
       showMessages();
     } else {
@@ -83,23 +92,29 @@ function timeElapse(c) {
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
-  page.setData({ clock: { days, hours, minutes, seconds } });
+  document.getElementById("elapseClock").innerHTML = `
+    <span class="digit">${days}</span> days
+    <span class="digit">${hours}</span> hours
+    <span class="digit">${minutes}</span> minutes
+    <span class="digit">${seconds}</span> seconds
+  `;
 }
 
 function fadeIn(name, speed, callback) {
+  let msg = document.getElementById(name);
+  let opacity = 0;
   let interval = setInterval(() => {
-    let opacity = page.data.opacity;
-    if (opacity[name] >= 1) {
+    if (opacity >= 1) {
       clearInterval(interval);
-      callback();
+      callback && callback();
     }
-    opacity[name] += 30 / speed;
-    page.setData({ opacity });
-  }, 30);
+    msg.style.opacity = opacity;
+    opacity += 200 / speed;
+  }, 200);
 }
 
 function showMessages() {
-  fadeIn("message", 5000, showLoveU);
+  fadeIn("messages", 5000, showLoveU);
 }
 
 function showLoveU() {
@@ -164,7 +179,6 @@ Petal.prototype = {
     v4 = v2.clone().mult(this.stretchB); //.rotate(this.tanAngleB);
     ctx.strokeStyle = this.bloom.c;
     ctx.beginPath();
-    debugger;
     ctx.moveTo(v1.x, v1.y);
     ctx.bezierCurveTo(v3.x, v3.y, v4.x, v4.y, v2.x, v2.y);
     ctx.stroke();
