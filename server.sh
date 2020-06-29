@@ -2,6 +2,7 @@ set -e
 docker build -t love:tmp .
 set +e
 docker stop love
+docker rm love
 docker rmi -f love:latest
 docker tag love:tmp love:latest
 docker rmi love:tmp
