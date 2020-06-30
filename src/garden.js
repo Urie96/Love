@@ -17,7 +17,7 @@ function heartInit() {
   };
   renderLoop();
   let cancelRender = () => {
-    renderLoop = () => {};
+    renderLoop = () => { };
   };
   // setInterval(() => {
   //   garden.render();
@@ -47,7 +47,7 @@ function getHeartPoint(c) {
       Math.cos(4 * b));
   return [canvas.width / 2 + x, canvas.height / 2 + y];
 }
-function startHeartAnimation(callback) {
+function startHeartAnimation(callback = () => { }) {
   var d = 10;
   var b = [];
   let interval = setInterval(function () {
@@ -66,7 +66,7 @@ function startHeartAnimation(callback) {
       garden.createRandomBloom(x, y);
     }
     if (d >= 30) {
-      callback && callback();
+      callback();
       clearInterval(interval);
       showMessages();
     } else {

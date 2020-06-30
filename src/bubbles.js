@@ -6,7 +6,7 @@ let canvas = {},
   gap = 22, // gap越小，泡泡越小，字体越精细
   speedCompensate = 1, // 为了适应帧数变化
   callbackWhenStop;
-export default function (canvasNode, callback) {
+export default function (canvasNode, callback = () => { }) {
   callbackWhenStop = callback;
   canvas = canvasNode;
   gap = Math.floor((gap * window.devicePixelRatio) / 3);
