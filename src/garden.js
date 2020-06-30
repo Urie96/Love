@@ -17,7 +17,9 @@ function heartInit() {
   };
   renderLoop();
   let cancelRender = () => {
-    renderLoop = () => { };
+    setTimeout(() => {
+      renderLoop = () => { }
+    }, 2000)
   };
   // setInterval(() => {
   //   garden.render();

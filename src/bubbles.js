@@ -4,7 +4,6 @@ import { requestAnimationFrame } from "./common.js";
 let canvas = {},
   ctx = {},
   gap = 22, // gap越小，泡泡越小，字体越精细
-  speedCompensate = 1, // 为了适应帧数变化
   callbackWhenStop;
 export default function (canvasNode, callback = () => { }) {
   callbackWhenStop = callback;
@@ -38,9 +37,7 @@ let action = (() => {
         }, 2000);
         break;
       default:
-        shape.switchShape(
-          shapeBuilder.letter(current[0] === "#" ? "Urie" : current)
-        );
+        shape.switchShape(shapeBuilder.letter(current));
     }
   };
   return {
@@ -85,7 +82,7 @@ let shape = (() => {
         dot.move({
           z: dot.s ? Math.random() * 20 + 10 : Math.random() * 5 + 5, // 圆点半径
           a: dot.s ? Math.random() : 0,
-          h: Math.floor((dot.s || fast ? 18 : 30) / speedCompensate),
+          h: (dot.s || fast ? 18 : 30),
         });
         dot.s = true; // 构成字体的点是静态的
         dot.move({
@@ -107,7 +104,7 @@ let shape = (() => {
         dot.move({
           z: Math.random() * 20 + 10,
           a: Math.random(),
-          h: Math.floor(20 / speedCompensate),
+          h: 20,
         });
         dot.s = false; // 多余的点是非静态点
         dot.e = 0.04;
@@ -121,12 +118,14 @@ let shape = (() => {
         });
       }
     },
-    render: () => {
-      dots.forEach((value) => {
-        value.render();
-      });
+    render: function () {
+      let complete = true;
+      for (let i = 0; i < dots.length; i++) {
+        complete = dots[i].render() && complete
+      }
+      return complete
     },
-    reset: () => {
+    reset: function () {
       dots = [];
     },
   };
@@ -140,15 +139,17 @@ let drawing = {
     };
   },
   renderLoop: (fn) => {
-    let lastTime = 0;
+    let complete = false;
+    // let lastTime = 0;
     let loop = () => {
-      let now = +new Date(),
-        fps = 1000 / (now - lastTime);
-      speedCompensate = fps < 20 || fps > 180 ? 1 : 60 / fps;
-      lastTime = now;
+      // let now = +new Date(),
+      //   fps = 1000 / (now - lastTime);
+      // lastTime = now;
       // console.log(Math.floor(fps))
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      fn();
+      if (fn() && !complete) {
+        // console.log(true)
+      }
       requestAnimationFrame(loop);
     };
     loop();
@@ -156,14 +157,7 @@ let drawing = {
   drawCircle: (dot) => {
     ctx.fillStyle = "rgba(255,255,255," + dot.a + ")";
     ctx.beginPath();
-    ctx.arc(
-      Math.floor(dot.x),
-      Math.floor(dot.y),
-      (gap / 11) * dot.z,
-      0,
-      2 * Math.PI,
-      true
-    );
+    ctx.arc(Math.floor(dot.x), Math.floor(dot.y), (gap / 11) * dot.z, 0, 2 * Math.PI, true);
     ctx.closePath();
     ctx.fill();
   },
@@ -171,10 +165,9 @@ let drawing = {
 
 let shapeBuilder = {
   letter: function (word) {
-    let fontFamily = "Avenir, Helvetica Neue, Helvetica, Arial, sans-serif",
-      fontSize = 500;
+    let fontSize = 500
     let setFontSize = (s) => {
-      ctx.font = "bold " + s + "px " + fontFamily;
+      ctx.font = `bold ${s}px Avenir, Helvetica Neue, Helvetica, Arial, sans-serif`
     };
     setFontSize(fontSize);
     let words = word.replace("+", "").split("");
@@ -237,7 +230,7 @@ class Dot {
   }
 
   move(p, avoidStatic) {
-    if (!avoidStatic || (avoidStatic && this.distanceTo(p) > 1)) {
+    if (!avoidStatic || this.distanceTo(p) > 1) {
       this.q.push(p);
     }
   }
@@ -259,8 +252,8 @@ class Dot {
     }
     if (d > 1) {
       // 如果距离够大，就一次移动一小点，取决于e
-      this.x -= dx * this.e * speedCompensate;
-      this.y -= dy * this.e * speedCompensate;
+      this.x -= dx * this.e;
+      this.y -= dy * this.e;
       return false;
     }
     if (this.h > 0) {
@@ -280,22 +273,17 @@ class Dot {
         this.t.z = p.z || this.z;
         this.t.a = p.a || this.a;
         this.h = p.h || 0;
-      } else {
-        if (this.s) {
-          // this.x -= Math.sin(Math.random() * Math.PI);
-          // this.y -= Math.sin(Math.random() * Math.PI);
-        } else {
-          this.move({
-            x: this.x + Math.random() * 50 - 25,
-            y: this.y + Math.random() * 50 - 25,
-          });
-        }
+      } else if (!this.s) {
+        this.move({
+          x: this.x + Math.random() * 50 - 25,
+          y: this.y + Math.random() * 50 - 25,
+        });
       }
     }
     let d = this.a - this.t.a;
-    this.a = Math.max(0.1, this.a - d * 0.05 * speedCompensate);
+    this.a = Math.max(0.1, this.a - d * 0.05);
     d = this.z - this.t.z;
-    this.z = Math.max(1, this.z - d * 0.05 * speedCompensate);
+    this.z = Math.max(1, this.z - d * 0.05);
   }
   _draw() {
     drawing.drawCircle(this);
@@ -303,5 +291,15 @@ class Dot {
   render() {
     this._update();
     this._draw();
+    return this._complete()
+  }
+  _complete() {
+    if (this.s) {
+      return true
+    }
+    if (this.q.length > 0) {
+      return false
+    }
+    return this.distanceTo(this.t) < 1 || this.h <= 0
   }
 }
