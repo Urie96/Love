@@ -1,11 +1,12 @@
+@font-face {
+  font-family: digit;
+  src: url("digital-7_mono.ttf") format("truetype");
+}
+
 html {
   height: 100%;
 }
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin: 0;
   height: 100%;
   background: -webkit-linear-gradient(
@@ -34,6 +35,7 @@ body {
     rgb(55, 148, 192) 120%
   );
 }
+
 #words {
   margin-top: 30px;
   font-family: "sans-serif";
@@ -60,7 +62,6 @@ body {
   margin-top: 80px;
   margin-right: 120px;
   text-align: right;
-  /* display: none; */
 }
 
 #loveu .signature {
@@ -69,8 +70,17 @@ body {
   font-style: italic;
 }
 
-canvas {
+.fullscreen {
   position: absolute;
+  right: 0;
+  bottom: 0;
   height: 100%;
   width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

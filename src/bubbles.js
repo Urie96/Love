@@ -1,5 +1,4 @@
 import msg from "./msg.js";
-import { requestAnimationFrame } from "./common.js";
 
 let canvas = {},
   ctx = {},
@@ -11,6 +10,7 @@ export default function (canvasNode, callback = () => { }) {
   gap = Math.floor((gap * window.devicePixelRatio) / 3);
   ctx = canvas.getContext("2d");
   action.set(msg + "|#stop");
+  // action.set("1|2");
   drawing.renderLoop(shape.render);
 }
 function restart() {
@@ -80,8 +80,8 @@ let shape = (() => {
         let dot = dots[i];
         dot.e = fast ? 0.25 : dot.s ? 0.14 : 0.11;
         dot.move({
-          z: dot.s ? Math.random() * 20 + 10 : Math.random() * 5 + 5, // 圆点半径
-          a: dot.s ? Math.random() : 0,
+          z: dot.s ? Math.random() * 10 + 10 : Math.random() * 5 + 5, // 圆点半径
+          a: dot.s ? Math.random() : 0.5,
           h: (dot.s || fast ? 18 : 30),
         });
         dot.s = true; // 构成字体的点是静态的
@@ -102,7 +102,7 @@ let shape = (() => {
           continue;
         }
         dot.move({
-          z: Math.random() * 20 + 10,
+          z: Math.random() * 10 + 10,
           a: Math.random(),
           h: 20,
         });
@@ -148,11 +148,12 @@ let drawing = {
       // console.log(Math.floor(fps))
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (fn() && !complete) {
-        // console.log(true)
+        complete = true
+        console.log(true)
       }
-      requestAnimationFrame(loop);
+      window.requestAnimationFrame(loop);
     };
-    loop();
+    window.requestAnimationFrame(loop);
   },
   drawCircle: (dot) => {
     ctx.fillStyle = "rgba(255,255,255," + dot.a + ")";
@@ -226,7 +227,8 @@ class Dot {
     this.e = 0.07; // 速度值
     this.s = true; // 点是否静态
     this.q = []; // 接下来要移动的点
-    this.t = { x: this.x, y: this.y, z: this.z, a: this.a, h: this.h }; // 正在前往的地点
+    this.t = { x, y, z: 5, a: 1, h: 0 }; // 正在前往的地点
+    this.isStaticPrevious = false;
   }
 
   move(p, avoidStatic) {
@@ -274,10 +276,11 @@ class Dot {
         this.t.a = p.a || this.a;
         this.h = p.h || 0;
       } else if (!this.s) {
+        debugger
         this.move({
           x: this.x + Math.random() * 50 - 25,
           y: this.y + Math.random() * 50 - 25,
-        });
+        })
       }
     }
     let d = this.a - this.t.a;
@@ -294,9 +297,10 @@ class Dot {
     return this._complete()
   }
   _complete() {
-    if (this.s) {
+    if (!this.s) {
       return true
     }
+    // debugger
     if (this.q.length > 0) {
       return false
     }

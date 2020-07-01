@@ -5,36 +5,31 @@
 	<title>Love Yue</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style type="text/css">
-		@font-face {
-			font-family: digit;
-			src: url('digital-7_mono.ttf') format("truetype");
-		}
-	</style>
-	<link href="css/default.css" type="text/css" rel="stylesheet">
-	<script src="js/entry.js"></script>
-</head>
+	<link href="dist/default.css" type="text/css" rel="stylesheet">
+	<script type="module" src="src/index.js"></script>
 </head>
 
 <body>
-	<canvas id="bubbles">
+	<canvas id="bubbles" class="fullscreen">
 	</canvas>
 
-	<canvas id="garden">
+	<canvas id="garden" class="fullscreen">
 	</canvas>
-	<div id="words">
-		<div id="messages" style="opacity: 0">
-			Yue Yue, We have been together for
-			<div id="elapseClock"></div>
-		</div>
-		<div id="loveu" style="opacity: 0">
-			My heart belongs to you.
-			<div class="signature">- RuiRui</div>
+	<div class="fullscreen container">
+		<div id="words">
+			<div id="messages" style="opacity: 0">
+				Yue Yue, We have been together for
+				<div id="elapseClock"></div>
+			</div>
+			<div id="loveu" style="opacity: 0">
+				My heart belongs to you.
+				<div class="signature">- Rui Rui</div>
+			</div>
 		</div>
 	</div>
-	<audio autoplay="autoplay" loop="loop">
+	<!-- <audio autoplay="autoplay" loop="loop">
 		<source src="http://oss.sweetlove.top/chun.mp3" type="audio/mpeg">
-	</audio>
+	</audio> -->
 </body>
 
 </html>

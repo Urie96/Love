@@ -1,5 +1,3 @@
-import { requestAnimationFrame } from "./common.js";
-
 let canvas = {},
   ctx = {},
   garden = {};
@@ -13,14 +11,15 @@ function heartInit() {
   garden = new Garden(ctx, canvas);
   let renderLoop = () => {
     garden.render();
-    requestAnimationFrame(renderLoop);
+    window.requestAnimationFrame(renderLoop);
   };
-  renderLoop();
+  window.requestAnimationFrame(renderLoop)
   let cancelRender = () => {
     setTimeout(() => {
       renderLoop = () => { }
-    }, 2000)
-  };
+    }, 5000)
+  }
+  startHeartAnimation(cancelRender);
   // setInterval(() => {
   //   garden.render();
   // }, Garden.options.growSpeed);
@@ -30,11 +29,9 @@ function heartInit() {
   together.setMinutes(45);
   together.setSeconds(0);
   together.setMilliseconds(0);
-  startHeartAnimation(cancelRender);
-  timeElapse(together);
   setInterval(function () {
     timeElapse(together);
-  }, 500);
+  }, 1000);
 }
 
 function getHeartPoint(c) {

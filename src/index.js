@@ -1,8 +1,7 @@
 import renderBubbles from "./bubbles.js";
 import renderGarden from "./garden.js";
+import { adjustCanvas } from "./common.js";
 
-console.log(document)
-console.log(document.body)
 document.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
 document.body.style.overflow = 'hidden'
 let bubbleCanvas = document.getElementById("bubbles");
@@ -16,8 +15,3 @@ renderBubbles(bubbleCanvas, () => {
     renderGarden(gardenCanvas);
 });
 
-function adjustCanvas(canvas) {
-    var dpr = window.devicePixelRatio;
-    canvas.width = parseInt(window.getComputedStyle(canvas).width) * dpr;
-    canvas.height = parseInt(window.getComputedStyle(canvas).height) * dpr;
-}
