@@ -1,17 +1,48 @@
-import renderBubbles from "./bubbles.js";
-import renderGarden from "./garden.js";
-import { adjustCanvas } from "./common.js";
+/* eslint-disable no-tabs */
+import renderBubbles from './js/bubbles.js'
+import renderGarden from './js/garden.js'
+import { adjustCanvas, addAnimationFrameFuncToWindow } from './js/common.js'
+import './css/style.css'
 
-document.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
-document.body.style.overflow = 'hidden'
-let bubbleCanvas = document.getElementById("bubbles");
-let gardenCanvas = document.getElementById("garden");
-document.getElementById("words").style.transform = `scale(${
-    window.innerWidth < 700 ? window.innerWidth / 700 : 1
-    })`;
-adjustCanvas(bubbleCanvas);
-adjustCanvas(gardenCanvas);
-renderBubbles(bubbleCanvas, () => {
-    renderGarden(gardenCanvas);
-});
+window.onload = function () {
+    addAnimationFrameFuncToWindow()
+    injectElement()
+    initCanvas()
+}
 
+function initCanvas() {
+    document.addEventListener('touchmove', function (e) { e.preventDefault() }, { passive: false })
+    document.body.style.overflow = 'hidden'
+    const bubbleCanvas = document.getElementById('bubbles')
+    const gardenCanvas = document.getElementById('garden')
+    document.getElementById('words').style.transform = `scale(${
+        window.innerWidth < 700 ? window.innerWidth / 700 : 1
+        })`
+    adjustCanvas(bubbleCanvas)
+    adjustCanvas(gardenCanvas)
+    renderBubbles(bubbleCanvas, () => {
+        renderGarden(gardenCanvas)
+    })
+}
+
+function injectElement() {
+    const templateHTML = `
+        <canvas id="bubbles" class="fullscreen" ></canvas>
+        <canvas id="garden" class="fullscreen"></canvas>
+        <div class="fullscreen container">
+            <div id="words">
+                <div id="messages" style="opacity: 0">
+                    Yue Yue, We have been together for
+				<div id="elapseClock"></div>
+                </div>
+                <div id="loveu" style="opacity: 0">
+                    My heart belongs to you.
+				<div class="signature">- Rui Rui</div>
+                </div>
+            </div>
+        </div>
+        <audio autoplay="autoplay" loop="loop">
+            <source src="http://oss.sweetlove.top/chun.mp3" type="audio/mpeg">
+        </audio>`
+    document.getElementsByTagName('body').item(0).innerHTML = templateHTML
+}
