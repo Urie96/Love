@@ -9,8 +9,8 @@ export default function (canvasNode, callback = () => { }) {
   canvas = canvasNode
   gap = Math.floor((gap * window.devicePixelRatio) / 3)
   ctx = canvas.getContext('2d')
-  action.set(msg + '|#stop')
-  // action.set("1|2");
+  action.set(msg.replace(/\+/g, '') + '|#stop')
+  // action.set('悦悦|今天是|一周年|#stop')
   drawing.renderLoop(shape.render)
 }
 // eslint-disable-next-line no-unused-vars
@@ -22,6 +22,7 @@ function restart() {
 const action = (() => {
   let sequence = []
   let interval
+  let maxRows
   const loop = () => {
     const current = sequence.shift()
     if (!current) {
@@ -37,13 +38,14 @@ const action = (() => {
         }, 2000)
         break
       default:
-        shape.switchShape(shapeBuilder.letter(current))
+        shape.switchShape(shapeBuilder.letter(current, maxRows))
     }
   }
   return {
     set: (value) => {
       clearInterval(interval)
       sequence = value.split('|')
+      maxRows = Math.max(...sequence.filter(value => (!getAction(value))).map(value => value.length))
       loop()
       interval = setInterval(loop, 3000)
     }
@@ -150,7 +152,6 @@ const drawing = {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       if (fn() && !complete) {
         complete = true
-        console.log(true)
       }
       window.requestAnimationFrame(loop)
     }
@@ -166,20 +167,20 @@ const drawing = {
 }
 
 const shapeBuilder = {
-  letter: function (word) {
+  letter: function (word, maxRows = 4) {
     const fontSize = 500
     const setFontSize = (s) => {
       ctx.font = `bold ${s}px Avenir, Helvetica Neue, Helvetica, Arial, sans-serif`
     }
     setFontSize(fontSize)
-    const words = word.replace('+', '').split('')
+    const words = word.split('')
     const minFontWidth = Math.min(
-      ...words.map((value) => ctx.measureText(value).width)
+      ...words.map(value => ctx.measureText(value).width)
     )
     const minFontSize = Math.min(
       fontSize,
       (canvas.width / minFontWidth) * 0.8 * fontSize,
-      (canvas.height * 0.8) / 4 // 4使字体大小前后一致
+      (canvas.height * 0.8) / maxRows // 使字体大小前后一致
     )
     setFontSize(minFontSize)
     ctx.clearRect(0, 0, canvas.width, canvas.height)

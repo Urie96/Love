@@ -1,3 +1,4 @@
+import { showMessages } from './common.js'
 let canvas = {}
 let ctx = {}
 let garden = {}
@@ -97,27 +98,6 @@ function timeElapse(c) {
     <span class="digit">${minutes}</span> minutes
     <span class="digit">${seconds}</span> seconds
   `
-}
-
-function fadeIn(name, speed, callback) {
-  const msg = document.getElementById(name)
-  let opacity = 0
-  const interval = setInterval(() => {
-    if (opacity >= 1) {
-      clearInterval(interval)
-      callback && callback()
-    }
-    msg.style.opacity = opacity
-    opacity += 200 / speed
-  }, 200)
-}
-
-function showMessages() {
-  fadeIn('messages', 5000, showLoveU)
-}
-
-function showLoveU() {
-  fadeIn('loveu', 2000)
 }
 
 function Vector(x, y) {
