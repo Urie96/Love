@@ -1,11 +1,14 @@
-import { showMessages } from './common.js'
 let canvas = {}
 let ctx = {}
 let garden = {}
-export default (canvasNode) => {
-  canvas = canvasNode
-  ctx = canvas.getContext('2d')
-  heartInit()
+let callbackWhenStop
+export default function (canvasNode) {
+  return new Promise(resolve => {
+    callbackWhenStop = resolve
+    canvas = canvasNode
+    ctx = canvas.getContext('2d')
+    heartInit()
+  })
 }
 function heartInit() {
   ctx.globalCompositeOperation = 'lighter'
@@ -68,7 +71,7 @@ function startHeartAnimation(callback = () => { }) {
     if (d >= 30) {
       callback()
       clearInterval(interval)
-      showMessages()
+      callbackWhenStop()
     } else {
       d += 0.2
     }

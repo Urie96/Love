@@ -1,18 +1,18 @@
 /* eslint-disable no-tabs */
 import renderBubbles from './js/bubbles.js'
 import renderGarden from './js/garden.js'
-import { adjustCanvas, addAnimationFrameFuncToWindow } from './js/common.js'
+import { adjustCanvas, addAnimationFrameFuncToWindow, fadeIn } from './js/common.js'
 import './css/style.css'
 
 window.onload = function () {
+    document.addEventListener('touchmove', function (e) { e.preventDefault() }, { passive: false })
+    document.body.style.overflow = 'hidden'
     addAnimationFrameFuncToWindow()
     injectElement()
     initCanvas()
 }
 
 function initCanvas() {
-    document.addEventListener('touchmove', function (e) { e.preventDefault() }, { passive: false })
-    document.body.style.overflow = 'hidden'
     const bubbleCanvas = document.getElementById('bubbles')
     const gardenCanvas = document.getElementById('garden')
     document.getElementById('words').style.transform = `scale(${
@@ -20,9 +20,7 @@ function initCanvas() {
         })`
     adjustCanvas(bubbleCanvas)
     adjustCanvas(gardenCanvas)
-    renderBubbles(bubbleCanvas, () => {
-        renderGarden(gardenCanvas)
-    })
+    renderBubbles(bubbleCanvas).then(() => renderGarden(gardenCanvas)).then(showMessages)
 }
 
 function injectElement() {
@@ -45,4 +43,12 @@ function injectElement() {
             <source src="http://oss.sweetlove.top/chun.mp3" type="audio/mpeg">
         </audio>`
     document.getElementsByTagName('body').item(0).innerHTML = templateHTML
+}
+
+function showMessages() {
+    fadeIn('messages', 5000, showLoveU)
+}
+
+function showLoveU() {
+    fadeIn('loveu', 2000)
 }

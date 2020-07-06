@@ -34,15 +34,7 @@ export function addAnimationFrameFuncToWindow() {
   }
 }
 
-export function showMessages() {
-  fadeIn('messages', 5000, showLoveU)
-}
-
-function showLoveU() {
-  fadeIn('loveu', 2000)
-}
-
-function fadeIn(name, speed, callback) {
+export function fadeIn(name, speed, callback) {
   const msg = document.getElementById(name)
   let opacity = 0
   const interval = setInterval(() => {

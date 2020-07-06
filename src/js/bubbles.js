@@ -4,14 +4,16 @@ let canvas = {}
 let ctx = {}
 let gap = 22 // gap越小，泡泡越小，字体越精细
 let callbackWhenStop
-export default function (canvasNode, callback = () => { }) {
-  callbackWhenStop = callback
-  canvas = canvasNode
-  gap = Math.floor((gap * window.devicePixelRatio) / 3)
-  ctx = canvas.getContext('2d')
-  action.set(msg.replace(/\+/g, '') + '|#stop')
-  // action.set('悦悦|今天是|一周年|#stop')
-  drawing.renderLoop(shape.render)
+export default function (canvasNode) {
+  return new Promise(resolve => {
+    callbackWhenStop = resolve
+    canvas = canvasNode
+    gap = Math.floor((gap * window.devicePixelRatio) / 3)
+    ctx = canvas.getContext('2d')
+    // action.set(msg.replace(/\+/g, '') + '|#stop')
+    action.set('#stop')
+    drawing.renderLoop(shape.render)
+  })
 }
 // eslint-disable-next-line no-unused-vars
 function restart() {
@@ -70,8 +72,8 @@ const shape = (() => {
   return {
     switchShape: (points, fast) => {
       const a = drawing.getArea()
-      if (points.length + 200 > dots.length) {
-        const size = points.length - dots.length + 200
+      if (points.length + 99 > dots.length) {
+        const size = points.length - dots.length + 99
         for (let i = 0; i < size; i++) {
           // 补充不够的点到屏幕中间
           dots.push(new Dot(a.w / 2, a.h / 2))
@@ -116,7 +118,7 @@ const shape = (() => {
           x: Math.random() * a.w,
           y: Math.random() * a.h,
           a: 0.2 + Math.random() * 0.4,
-          z: Math.random() * 6,
+          z: 3 + Math.random() * 3,
           h: 0
         })
       }
