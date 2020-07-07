@@ -1,64 +1,48 @@
-let canvas = {}
-let ctx = {}
-let garden = {}
-let callbackWhenStop
-export default function (canvasNode) {
+export default function (canvas) {
   return new Promise(resolve => {
-    callbackWhenStop = resolve
-    canvas = canvasNode
-    ctx = canvas.getContext('2d')
-    heartInit()
+    const ctx = canvas.getContext('2d')
+    ctx.globalCompositeOperation = 'lighter'
+    const garden = new Garden(ctx, canvas)
+    let renderLoop = () => {
+      garden.render()
+      window.requestAnimationFrame(renderLoop)
+    }
+    window.requestAnimationFrame(renderLoop)
+    const cancelRender = () => {
+      resolve()
+      setTimeout(() => {
+        renderLoop = () => { }
+      }, 5000)
+    }
+    startHeartAnimation(garden, canvas, cancelRender)
+    // setInterval(() => {
+    //   garden.render();
+    // }, Garden.options.growSpeed);
   })
 }
-function heartInit() {
-  ctx.globalCompositeOperation = 'lighter'
-  garden = new Garden(ctx, canvas)
-  let renderLoop = () => {
-    garden.render()
-    window.requestAnimationFrame(renderLoop)
-  }
-  window.requestAnimationFrame(renderLoop)
-  const cancelRender = () => {
-    setTimeout(() => {
-      renderLoop = () => { }
-    }, 5000)
-  }
-  startHeartAnimation(cancelRender)
-  // setInterval(() => {
-  //   garden.render();
-  // }, Garden.options.growSpeed);
-  var together = new Date()
-  together.setFullYear(2019, 6, 13)
-  together.setHours(23)
-  together.setMinutes(45)
-  together.setSeconds(0)
-  together.setMilliseconds(0)
-  setInterval(function () {
-    timeElapse(together)
-  }, 1000)
-}
 
-function getHeartPoint(c) {
-  var b = c / Math.PI
-  var r = Math.min(canvas.height - 100, canvas.width) / 35
-  var x = r * 16 * Math.pow(Math.sin(b), 3)
-  var y =
+function getHeartPoint({ height, width }, c) {
+  const b = c / Math.PI
+  const r = Math.min(height + 100, width) / 35
+  const x = r * 16 * Math.pow(Math.sin(b), 3)
+  const y =
     -r *
     (13 * Math.cos(b) -
       5 * Math.cos(2 * b) -
       2 * Math.cos(3 * b) -
       Math.cos(4 * b))
-  return [canvas.width / 2 + x, canvas.height / 2 + y]
+  return [width / 2 + x, height / 2 + y - 50]
 }
-function startHeartAnimation(callback = () => { }) {
-  var d = 10
-  var b = []
+
+function startHeartAnimation(garden, { height, width }, callback = () => { }) {
+  let d = 10
+  const b = []
   const interval = setInterval(function () {
-    const [x, y] = getHeartPoint(d)
-    var e = true
-    for (var f = 0; f < b.length; f++) {
-      var g = b[f]
-      var j = Math.sqrt(Math.pow(g[0] - x, 2) + Math.pow(g[1] - y, 2))
+    const [x, y] = getHeartPoint({ height, width }, d)
+    let e = true
+    for (let f = 0; f < b.length; f++) {
+      const g = b[f]
+      const j = Math.sqrt(Math.pow(g[0] - x, 2) + Math.pow(g[1] - y, 2))
       if (j < Garden.options.bloomRadius.max * 1.3) {
         e = false
         break
@@ -71,68 +55,47 @@ function startHeartAnimation(callback = () => { }) {
     if (d >= 30) {
       callback()
       clearInterval(interval)
-      callbackWhenStop()
     } else {
       d += 0.2
     }
   }, 50)
 }
-function timeElapse(c) {
-  var e = Date()
-  var seconds = (Date.parse(e) - Date.parse(c)) / 1000
-  var days = Math.floor(seconds / (3600 * 24))
-  seconds = seconds % (3600 * 24)
-  var hours = Math.floor(seconds / 3600)
-  if (hours < 10) {
-    hours = '0' + hours
-  }
-  seconds = seconds % 3600
-  var minutes = Math.floor(seconds / 60)
-  if (minutes < 10) {
-    minutes = '0' + minutes
-  }
-  seconds = seconds % 60
-  if (seconds < 10) {
-    seconds = '0' + seconds
-  }
-  document.getElementById('elapseClock').innerHTML = `
-    <span class="digit">${days}</span> days
-    <span class="digit">${hours}</span> hours
-    <span class="digit">${minutes}</span> minutes
-    <span class="digit">${seconds}</span> seconds
-  `
-}
 
-function Vector(x, y) {
-  this.x = x
-  this.y = y
-}
+class Vector {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+  }
 
-Vector.prototype = {
-  rotate: function (theta) {
-    var x = this.x
-    var y = this.y
+  rotate(theta) {
+    const x = this.x
+    const y = this.y
     this.x = Math.cos(theta) * x - Math.sin(theta) * y
     this.y = Math.sin(theta) * x + Math.cos(theta) * y
     return this
-  },
-  mult: function (f) {
+  }
+
+  mult(f) {
     this.x *= f
     this.y *= f
     return this
-  },
-  clone: function () {
+  }
+
+  clone() {
     return new Vector(this.x, this.y)
-  },
-  length: function () {
+  }
+
+  length() {
     return Math.sqrt(this.x * this.x + this.y * this.y)
-  },
-  subtract: function (v) {
+  }
+
+  subtract(v) {
     this.x -= v.x
     this.y -= v.y
     return this
-  },
-  set: function (x, y) {
+  }
+
+  set(x, y) {
     this.x = x
     this.y = y
     return this
@@ -154,12 +117,11 @@ class Petal {
   }
 
   draw() {
-    var ctx = this.bloom.garden.ctx
-    var v1, v2, v3, v4
-    v1 = new Vector(0, this.r).rotate(Garden.degrad(this.startAngle))
-    v2 = v1.clone().rotate(Garden.degrad(this.angle))
-    v3 = v1.clone().mult(this.stretchA) // .rotate(this.tanAngleA);
-    v4 = v2.clone().mult(this.stretchB) // .rotate(this.tanAngleB);
+    const ctx = this.bloom.garden.ctx
+    const v1 = new Vector(0, this.r).rotate(Garden.degrad(this.startAngle))
+    const v2 = v1.clone().rotate(Garden.degrad(this.angle))
+    const v3 = v1.clone().mult(this.stretchA) // .rotate(this.tanAngleA);
+    const v4 = v2.clone().mult(this.stretchB) // .rotate(this.tanAngleB);
     ctx.strokeStyle = this.bloom.c
     ctx.beginPath()
     ctx.moveTo(v1.x, v1.y)
@@ -189,23 +151,23 @@ class Bloom {
   }
 
   draw() {
-    let isfinished = true
+    // let isfinished = true
     this.garden.ctx.save()
     this.garden.ctx.translate(this.p.x, this.p.y)
     this.petals.forEach((petal) => {
       petal.render()
-      isfinished &= petal.isfinished
+      // isfinished = isfinished && petal.isfinished
     })
     this.garden.ctx.restore()
-    if (isfinished === true) {
-      this.garden.removeBloom(this)
-    }
+    // if (isfinished === true) {
+    //   this.garden.removeBloom(this)
+    // }
   }
 
   init() {
-    var angle = 360 / this.pc
-    var startAngle = Garden.randomInt(0, 90)
-    for (var i = 0; i < this.pc; i++) {
+    const angle = 360 / this.pc
+    const startAngle = Garden.randomInt(0, 90)
+    for (let i = 0; i < this.pc; i++) {
       this.petals.push(
         new Petal(
           Garden.random(
@@ -237,7 +199,7 @@ class Garden {
   }
 
   render() {
-    for (var i = 0; i < this.blooms.length; i++) {
+    for (let i = 0; i < this.blooms.length; i++) {
       this.blooms[i].draw()
     }
   }
@@ -247,8 +209,8 @@ class Garden {
   }
 
   removeBloom(b) {
-    var bloom
-    for (var i = 0; i < this.blooms.length; i++) {
+    let bloom
+    for (let i = 0; i < this.blooms.length; i++) {
       bloom = this.blooms[i]
       if (bloom === b) {
         this.blooms.splice(i, 1)
@@ -306,10 +268,10 @@ class Garden {
   }
 
   static randomrgba(rmin, rmax, gmin, gmax, bmin, bmax, a) {
-    var r = Math.round(Garden.random(rmin, rmax))
-    var g = Math.round(Garden.random(gmin, gmax))
-    var b = Math.round(Garden.random(bmin, bmax))
-    var limit = 5
+    const r = Math.round(Garden.random(rmin, rmax))
+    const g = Math.round(Garden.random(gmin, gmax))
+    const b = Math.round(Garden.random(bmin, bmax))
+    const limit = 5
     if (Math.abs(r - g) <= limit &&
       Math.abs(g - b) <= limit &&
       Math.abs(b - r) <= limit) {
