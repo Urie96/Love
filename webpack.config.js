@@ -15,7 +15,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Love Yue',
-            hash: false,
+            favicon: './src/file/favicon.ico',
             meta: {
                 'Cache-control': {
                     'http-equiv': 'Cache-control',
