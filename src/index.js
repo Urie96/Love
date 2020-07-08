@@ -29,7 +29,6 @@ function initCanvas() {
 
 function injectElement() {
     const templateHTML = `
-        <img src="favicon.ico" width="0" height="0"></img>
         <canvas id="bubbles" class="fullscreen" ></canvas>
         <canvas id="garden" class="fullscreen"></canvas>
         <div class="fullscreen container">
