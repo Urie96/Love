@@ -25,6 +25,7 @@ function initCanvas() {
     adjustCanvas(gardenCanvas)
     const dpr = window.devicePixelRatio
     renderBubbles(bubbleCanvas, dpr).then(() => renderGarden(gardenCanvas)).then(showMessages)
+    // renderGarden(gardenCanvas)
 }
 
 function injectElement() {

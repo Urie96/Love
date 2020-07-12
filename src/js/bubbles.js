@@ -65,12 +65,12 @@ class Shape {
         dots.push(new Dot(width / 2, height / 2))
       }
     }
-    // shuffle(dots);
+    // this._shuffleDots()
     let i = 0
     points.forEach((point) => {
       const dot = dots[i]
       dot.e = fast ? 0.25 : dot.s ? 0.14 : 0.11
-      dot.move({
+      dot.move({ // 先变大
         z: dot.s ? Math.random() * 10 + 10 : Math.random() * 5 + 5, // 圆点半径
         a: dot.s ? Math.random() : 0.5,
         h: (dot.s || fast ? 18 : 30)
@@ -92,7 +92,7 @@ class Shape {
       if (!dot.s) {
         continue
       }
-      dot.move({
+      dot.move({ // 先变大
         z: Math.random() * 10 + 10,
         a: Math.random(),
         h: 20
@@ -103,7 +103,7 @@ class Shape {
         // 并且它们的位置随机选择
         x: Math.random() * width,
         y: Math.random() * height,
-        a: 0.2 + Math.random() * 0.4,
+        a: 0.1 + Math.random() * 0.35,
         z: 3 + Math.random() * 3,
         h: 0
       })
@@ -160,7 +160,7 @@ class Action {
     }
     this._setSequence(sentences)
     this._loopSwitchShape()
-    this.interval = setInterval(() => { this._loopSwitchShape() }, 3000)
+    this.interval = setInterval(() => { this._loopSwitchShape() }, 3500)
   }
 
   shapeBuilder(word) {

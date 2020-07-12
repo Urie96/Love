@@ -56,7 +56,7 @@ function startHeartAnimation(garden, { height, width }, callback = () => { }) {
       callback()
       clearInterval(interval)
     } else {
-      d += 0.2
+      d += 0.22
     }
   }, 50)
 }
@@ -112,16 +112,16 @@ class Petal {
     this.growFactor = growFactor
     this.r = 1
     this.isfinished = false
-    // this.tanAngleA = Garden.random(-Garden.degrad(Garden.options.tanAngle), Garden.degrad(Garden.options.tanAngle));
-    // this.tanAngleB = Garden.random(-Garden.degrad(Garden.options.tanAngle), Garden.degrad(Garden.options.tanAngle));
+    this.tanAngleA = Garden.random(-Garden.degrad(Garden.options.tanAngle), Garden.degrad(Garden.options.tanAngle))
+    this.tanAngleB = Garden.random(-Garden.degrad(Garden.options.tanAngle), Garden.degrad(Garden.options.tanAngle))
   }
 
   draw() {
     const ctx = this.bloom.garden.ctx
     const v1 = new Vector(0, this.r).rotate(Garden.degrad(this.startAngle))
     const v2 = v1.clone().rotate(Garden.degrad(this.angle))
-    const v3 = v1.clone().mult(this.stretchA) // .rotate(this.tanAngleA);
-    const v4 = v2.clone().mult(this.stretchB) // .rotate(this.tanAngleB);
+    const v3 = v1.clone().mult(this.stretchA).rotate(this.tanAngleA)
+    const v4 = v2.clone().mult(this.stretchB).rotate(this.tanAngleB)
     ctx.strokeStyle = this.bloom.c
     ctx.beginPath()
     ctx.moveTo(v1.x, v1.y)
@@ -256,11 +256,11 @@ class Garden {
   }
 
   static degrad(angle) {
-    return (Garden.circle / 360) * angle
+    return ((2 * Math.PI) / 360) * angle
   }
 
   static raddeg(angle) {
-    return (angle / Garden.circle) * 360
+    return (angle / (2 * Math.PI)) * 360
   }
 
   static rgba(r, g, b, a) {
@@ -283,24 +283,24 @@ class Garden {
 }
 
 Garden.options = {
-  petalCount: {
+  petalCount: { // 每朵花的花瓣数量
     min: 9,
     max: 9
   },
-  petalStretch: {
+  petalStretch: { // 花瓣的长度范围
     min: 1,
     max: 3
   },
-  growFactor: {
+  growFactor: { // 不知道干啥的，但是很重要，决定了花朵整体
     min: 0.1,
-    max: 1
+    max: 0.45
   },
-  bloomRadius: {
+  bloomRadius: { // 花朵半径范围
     min: 20,
     max: 20
   },
-  density: 10,
-  growSpeed: 1000 / 40,
+  // density: 10,
+  // growSpeed: 1000 / 40,
   color: {
     rmin: 128,
     rmax: 255,
@@ -310,6 +310,5 @@ Garden.options = {
     bmax: 128,
     opacity: 0.1
   },
-  tanAngle: 60
+  tanAngle: 0
 }
-Garden.circle = 2 * Math.PI

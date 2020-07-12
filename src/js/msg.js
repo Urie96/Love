@@ -1,5 +1,6 @@
-const loveMsg = '悦悦|今天是|在一起|'
-const kownMsg = '悦悦|今天是|相识|'
+import { convertToChinaNum } from './common.js'
+const loveMsg = '今天|我与悦悦|在一起|'
+const knownMsg = '悦悦|今天是|相识|'
 const meetMsg = '悦悦|今天是|见到你|'
 const today = new Date().toLocaleDateString()
 const todayMsg = birthday() ||
@@ -7,17 +8,11 @@ const todayMsg = birthday() ||
   commemoration() ||
   randomMessage()
 
-export default todayMsg
-
-function getDay(before) {
-  const now = new Date()
-  return Math.floor(
-    (Date.parse(now) - Date.parse(before)) / (1000 * 3600 * 24)
-  )
-}
-
 function commemoration() {
-  const kownDay = getDay(new Date('2019/5/8'))
+  const getDay = (before) => Math.floor(
+    (Date.parse(new Date()) - Date.parse(before)) / (1000 * 3600 * 24)
+  )
+  const knownDay = getDay(new Date('2019/5/8'))
   const loveDay = getDay(new Date('2019/7/13'))
   const meetDay = getDay(new Date('2019/6/30'))
   const daymsg = {
@@ -39,7 +34,7 @@ function commemoration() {
   }
   return (
     generateMsg(loveMsg, loveDay) ||
-    generateMsg(kownMsg, kownDay) ||
+    generateMsg(knownMsg, knownDay) ||
     generateMsg(meetMsg, meetDay)
   )
 }
@@ -47,15 +42,15 @@ function commemoration() {
 function anniversary() {
   let num
   switch (today.substring(5)) {
-    case '7/13':
+    case '7/12':
       num = new Date().getFullYear() - '2019'
-      return loveMsg + num + '周年'
+      return loveMsg + '%周年啦'.replace('%', convertToChinaNum(num))
     case '5/8':
       num = new Date().getFullYear() - '2019'
-      return kownMsg + num + '周年'
+      return knownMsg + '%周年'.replace('%', convertToChinaNum(num))
     case '6/30':
       num = new Date().getFullYear() - '2019'
-      return meetMsg + num + '周年'
+      return meetMsg + '%周年'.replace('%', convertToChinaNum(num))
     case '5/20':
       return '悦悦|520快乐'
     case '2/14':
@@ -94,3 +89,5 @@ function birthday() {
     }
   }
 }
+
+export default todayMsg
