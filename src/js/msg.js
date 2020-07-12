@@ -42,7 +42,7 @@ function commemoration() {
 function anniversary() {
   let num
   switch (today.substring(5)) {
-    case '7/12':
+    case '7/13':
       num = new Date().getFullYear() - '2019'
       return loveMsg + '%周年啦'.replace('%', convertToChinaNum(num))
     case '5/8':
