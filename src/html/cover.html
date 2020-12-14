@@ -1,0 +1,32 @@
+<style>
+    #cover {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -999;
+    }
+</style>
+
+<div id='cover'>
+</div>
+
+<script>
+    function randomPair(option) {
+        const { max, min, minDif } = option;
+        const res = [0, 0];
+        res[0] = min + Math.floor((max - min) * Math.random());
+        res[1] = min + Math.floor((max - min - 2 * minDif) * Math.random());
+        if (res[0] - res[1] < minDif) {
+            res[1] += 2 * minDif;
+        }
+        return res;
+    }
+    const [a, b] = randomPair({
+        max: 255,
+        min: 0,
+        minDif: 60,
+    });
+    document.getElementById('cover').style.background = `linear-gradient(to left bottom,hsl(${a},100%,85%) 0%,hsl(${b},100%,85%) 100%)`;
+</script>
