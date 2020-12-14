@@ -1,4 +1,3 @@
-import './css/review.css';
 import ele from './html/review.html';
 import cover from './html/cover.html';
 import typeWriter from './js/typeWriter';

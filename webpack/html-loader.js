@@ -25,7 +25,6 @@ module.exports = (source) => {
     minifyJS: true,
     collapseWhitespace: true,
   });
-  console.log(miniHtml);
   return `
   const div = document.createElement('div');
   div.innerHTML = ${JSON.stringify(miniHtml)};
