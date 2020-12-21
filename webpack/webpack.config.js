@@ -18,6 +18,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Love Yue',
       favicon: './src/assets/favicon.svg',
+      meta: {
+        viewport: 'width=device-width,initial-scale=1,user-scalable=no'
+      },
       chunks: ['main'],
     }),
     new HtmlWebpackPlugin({
@@ -32,6 +35,10 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.styl$/,
+        use: ['style-loader', 'css-loader', 'stylus-loader'],
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],

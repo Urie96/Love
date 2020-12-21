@@ -1,6 +1,6 @@
 /* eslint-disable no-tabs */
 import div from './html/love.html';
-import './css/style.css';
+import './css/style.styl';
 import renderBubbles from './js/bubbles.js';
 import renderGarden from './js/garden.js';
 import {
@@ -9,7 +9,7 @@ import {
   fadeIn,
 } from './js/common.js';
 
-document.body.appendChild(div);
+div.appendTo(document.body)
 
 window.onload = function () {
   document.addEventListener(
@@ -21,6 +21,10 @@ window.onload = function () {
   );
   addAnimationFrameFuncToWindow();
   initCanvas();
+};
+
+window.onresize = function () {
+  window.location.reload()
 };
 
 function initCanvas() {
