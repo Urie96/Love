@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
-    "start": "webpack serve --config webpack/webpack.dev.js"
+    "start": "webpack serve --config webpack/webpack.dev.js",
+    "build-in-docker": "./build-in-docker.sh"
   },
   "repository": {
     "type": "git",

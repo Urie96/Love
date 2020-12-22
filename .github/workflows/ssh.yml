@@ -17,4 +17,4 @@ jobs:
           command: |
             cd /root/Love
             git pull
-            ./server.sh
+            npm run build-in-docker
