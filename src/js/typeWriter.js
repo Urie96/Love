@@ -10,7 +10,7 @@ const stepAppend = (text, { hook, speed, elementChangeTime }) =>
       at++;
       text.data = data.substring(0, at) + ((data.length - at) & 1 ? '_' : '');
       if (at === data.length) {
-        setTimeout(resolve, elementChangeTime);
+        resolve()
         return;
       }
       for (const s of speed) {
