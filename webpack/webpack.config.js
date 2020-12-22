@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const CopyPlugin = require('copy-webpack-plugin');
@@ -23,15 +24,7 @@ module.exports = {
       },
       chunks: ['main'],
     }),
-    new HtmlWebpackPlugin({
-      title: '向悦悦检讨',
-      filename: 'review/index.html',
-      favicon: './src/assets/favicon.svg',
-      chunks: ['review'],
-    }),
-    // new CopyPlugin({
-    //   patterns: [{ from: 'src/assets' }],
-    // }),
+    ...getReviewHtml(),
   ],
   module: {
     rules: [
@@ -52,9 +45,22 @@ module.exports = {
         use: ['./webpack/html-loader.js', './webpack/markdown-loader.js'],
       },
       {
-        test: /\.html$/,
+        test: /\D+\.html$/,
         use: ['./webpack/html-loader.js'],
       },
     ],
   },
 };
+
+function getReviewHtml() {
+  const htmls = fs.readdirSync('./src/html/review')
+  return htmls.map((v, i) =>
+    new HtmlWebpackPlugin({
+      title: '向悦悦检讨',
+      filename: i === 0 ? 'review/index.html' : `review/${i}.html`,
+      favicon: './src/assets/favicon.svg',
+      template: './src/html/review/' + v,
+      chunks: ['review'],
+    }),
+  )
+}

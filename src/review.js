@@ -1,17 +1,27 @@
-import ele from './html/review.html';
+import './css/review.styl'
 import cover from './html/cover.html';
 import typeWriter from './js/typeWriter';
 
 cover.appendTo(document.body);
-ele.appendTo(document.body);
+
+/** @param {HTMLElement} ele */
+function getInnerTextChineseCount(ele) {
+  if (!ele) {
+    return 0
+  }
+  return ele.innerText.match(/[\u4e00-\u9fa5A-Za-z0-9]/g).length
+}
+
+/** @param {HTMLElement} ele */
+function scrollToBottom(ele) {
+  ele.scrollTo({ top: ele.scrollHeight, behavior: 'smooth' })
+}
 
 const hook = (() => {
   const countEle = document.getElementById('count');
-  let count = 0;
-  return ({ char, element }) => {
-    if (element.id === 'text' && /^[\u4e00-\u9fa5A-Za-z0-9]$/.test(char)) {
-      countEle.innerHTML = ++count;
-    }
+  return () => {
+    countEle.innerHTML = getInnerTextChineseCount(document.getElementById('text'))
+    scrollToBottom(document.documentElement)
   };
 })();
 
@@ -29,5 +39,6 @@ const option = {
       time: 100,
     },
   ],
+  elementChangeTime: 500,
 };
 typeWriter(document.getElementById('typewrite'), option);
