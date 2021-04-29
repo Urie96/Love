@@ -15,7 +15,7 @@ server:
 steps:
   - name: build
     commands:
-      - cd /root/hackbook
+      - cd /root/Love
       - git pull gogs master
       - ./build-in-docker.sh
 
