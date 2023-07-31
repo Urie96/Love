@@ -1,6 +1,5 @@
 /* eslint-disable no-tabs */
-import div from './html/love.html';
-import './css/style.styl';
+import './css/style.css';
 import renderBubbles from './js/bubbles.js';
 import renderGarden from './js/garden.js';
 import {
@@ -8,8 +7,7 @@ import {
   addAnimationFrameFuncToWindow,
   fadeIn,
 } from './js/common.js';
-
-div.appendTo(document.body)
+import './js/play_bgm.js';
 
 window.onload = function () {
   document.addEventListener(
@@ -24,7 +22,7 @@ window.onload = function () {
 };
 
 window.onresize = function () {
-  window.location.reload()
+  window.location.reload();
 };
 
 function initCanvas() {
@@ -42,7 +40,7 @@ function initCanvas() {
 }
 
 function showMessages() {
-  var together = new Date();
+  const together = new Date();
   together.setFullYear(2019, 6, 13);
   together.setHours(23);
   together.setMinutes(45);
@@ -60,22 +58,22 @@ function showLoveU() {
 }
 
 function timeElapse(c) {
-  var e = Date();
-  var seconds = (Date.parse(e) - Date.parse(c)) / 1000;
-  var days = Math.floor(seconds / (3600 * 24));
+  const e = Date();
+  let seconds = (Date.parse(e) - Date.parse(c)) / 1000;
+  const days = Math.floor(seconds / (3600 * 24));
   seconds = seconds % (3600 * 24);
-  var hours = Math.floor(seconds / 3600);
+  let hours = Math.floor(seconds / 3600);
   if (hours < 10) {
-    hours = '0' + hours;
+    hours = `0${hours}`;
   }
   seconds = seconds % 3600;
-  var minutes = Math.floor(seconds / 60);
+  let minutes = Math.floor(seconds / 60);
   if (minutes < 10) {
-    minutes = '0' + minutes;
+    minutes = `0${minutes}`;
   }
   seconds = seconds % 60;
   if (seconds < 10) {
-    seconds = '0' + seconds;
+    seconds = `0${seconds}`;
   }
   document.getElementById('elapseClock').innerHTML = `
       <span class="digit">${days}</span> days

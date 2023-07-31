@@ -29,7 +29,7 @@ function commemoration() {
       return msg + daymsg[day]
     }
     if (day % 100 === 0 || day % 1111 === 0 || day % 111 === 0) {
-      return msg + day + '天'
+      return `${msg}${day}天`
     }
   }
   return (
@@ -85,7 +85,7 @@ function birthday() {
   for (let i = 0; i < birthday.length; i++) {
     if (today === birthday[i]) {
       const age = birthday[i].substring(0, 4) - 1998
-      return '悦悦|' + age + '岁|生日快乐'
+      return `悦悦|${age}岁|生日快乐`
     }
   }
 }

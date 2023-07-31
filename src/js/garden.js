@@ -264,7 +264,7 @@ class Garden {
   }
 
   static rgba(r, g, b, a) {
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'
+    return `rgba(${r},${g},${b},${a})`
   }
 
   static randomrgba(rmin, rmax, gmin, gmax, bmin, bmax, a) {

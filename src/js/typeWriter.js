@@ -4,9 +4,7 @@ const stepAppend = (text, { hook, speed, elementChangeTime }) =>
     let at = 0;
     function appendOne() {
       const next = data.substr(at, 1);
-      hook &&
-        hook.ontype &&
-        hook.ontype({ char: next, element: text.parentElement });
+      hook?.ontype?.({ char: next, element: text.parentElement });
       at++;
       text.data = data.substring(0, at) + ((data.length - at) & 1 ? '_' : '');
       if (at === data.length) {

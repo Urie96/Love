@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'Lovers Quarrel';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./LoversQuarrel.ttf") format('truetype');
+}
+@font-face {
+  font-family: digit;
+  src: url("./digital-7_mono.ttf") format('truetype');
+}
+html {
+  height: 100%;
+}
+html body {
+  overflow: hidden;
+  margin: 0;
+  height: 100%;
+  background: -webkit-linear-gradient(#cbebdb 0%, #3794c0 120%);
+  background: -moz-linear-gradient(#cbebdb 0%, #3794c0 120%);
+  background: -o-linear-gradient(#cbebdb 0%, #3794c0 120%);
+  background: -ms-linear-gradient(#cbebdb 0%, #3794c0 120%);
+  background: linear-gradient(#cbebdb 0%, #3794c0 120%);
+}
+#words {
+  font-family: "Lovers Quarrel", cursive;
+  font-size: 50px;
+  color: #666;
+  width: 500px;
+}
+#words > div {
+  opacity: 0;
+}
+#elapseClock {
+  text-align: right;
+  font-family: digit;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#elapseClock .digit {
+  font-size: 36px;
+}
+#loveu {
+  padding: 5px;
+  margin-top: 60px;
+  margin-right: 120px;
+  text-align: right;
+}
+#loveu .signature {
+  margin-top: 10px;
+  font-style: italic;
+}
+.fullscreen {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

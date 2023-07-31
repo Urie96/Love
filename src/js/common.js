@@ -1,24 +1,24 @@
 export function adjustCanvas(canvas) {
-  var dpr = window.devicePixelRatio
+  const dpr = window.devicePixelRatio
   canvas.width = parseInt(window.getComputedStyle(canvas).width) * dpr
   canvas.height = parseInt(window.getComputedStyle(canvas).height) * dpr
 }
 
 export function addAnimationFrameFuncToWindow() {
-  var lastTime = 0
-  var vendors = ['webkit', 'moz']
-  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame']
+  let lastTime = 0
+  const vendors = ['webkit', 'moz']
+  for (let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[`${vendors[x]}RequestAnimationFrame`]
     window.cancelAnimationFrame =
-      window[vendors[x] + 'CancelAnimationFrame'] ||
-      window[vendors[x] + 'CancelRequestAnimationFrame']
+      window[`${vendors[x]}CancelAnimationFrame`] ||
+      window[`${vendors[x]}CancelRequestAnimationFrame`]
   }
 
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = function (callback = () => { }) {
-      var currTime = new Date().getTime()
-      var timeToCall = Math.max(0, 16 - (currTime - lastTime))
-      var id = window.setTimeout(function () {
+      const currTime = new Date().getTime()
+      const timeToCall = Math.max(0, 16 - (currTime - lastTime))
+      const id = window.setTimeout(function () {
         const nextTime = currTime + timeToCall
         callback(nextTime)
       }, timeToCall)
@@ -48,17 +48,17 @@ export function fadeIn(name, speed, callback = () => { }) {
 }
 
 export function convertToChinaNum(num) {
-  var arr1 = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
-  var arr2 = ['', '十', '百', '千', '万', '十', '百', '千', '亿', '十', '百', '千', '万', '十', '百', '千', '亿']
+  const arr1 = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+  const arr2 = ['', '十', '百', '千', '万', '十', '百', '千', '亿', '十', '百', '千', '万', '十', '百', '千', '亿']
   if (Number.isInteger()) {
     return '零'
   }
-  var english = num.toString().split('')
-  var result = ''
-  for (var i = 0; i < english.length; i++) {
-    var des = english.length - 1 - i
+  const english = num.toString().split('')
+  let result = ''
+  for (let i = 0; i < english.length; i++) {
+    const des = english.length - 1 - i
     result = arr2[i] + result
-    var arrIndex = english[des]
+    const arrIndex = english[des]
     result = arr1[arrIndex] + result
   }
   result = result.replace(/零(千|百|十)/g, '零').replace(/十零/g, '十')
